@@ -8,13 +8,7 @@ vector<vector<int>> generate(int numRows)
 	vector<int> v;
 	vector<vector<int>> vSet;
 
-	if (numRows <= 0)
-	{
-		vSet.push_back(v);
-
-		return vSet;
-	}
-	else
+	if (numRows > 0)
 	{
 		v.push_back(1);
 		vSet.push_back(v);
@@ -31,9 +25,9 @@ vector<vector<int>> generate(int numRows)
 			}
 			vSet.push_back(v);
 		}
-
-		return vSet;
 	}
+	
+	return vSet;
 }
 
 int main()
