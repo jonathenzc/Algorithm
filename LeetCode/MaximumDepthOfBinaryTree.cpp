@@ -74,11 +74,11 @@ int main()
 	//构建这样的树
 	//        5
 	//	     / \
-		//	    4   8
+	//	    4   8
 	//	   /   / \
-		//	  11  13  4
+	//	  11  13  4
 	//	 /  \      \
-		//	7    2      1
+	//	7    2      1
 
 	TreeNode *node7 = new TreeNode(7);
 	TreeNode *node2 = new TreeNode(2);
