@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stack>
 
 using namespace std;
 
@@ -9,96 +10,137 @@ struct TreeNode {
 	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void changeLeftAndRight(TreeNode *left, TreeNode *right)
+//void changeLeftAndRight(TreeNode *left, TreeNode *right)
+//{
+//	if (left != NULL && right != NULL)
+//	{
+//		int temp = left->val;
+//		left->val = right->val;
+//		right->val = temp;
+//
+//		//左边的左边和右边的右边比
+//		if (left->left == NULL && right->right != NULL)
+//		{
+//			left->left = right->right;
+//			right->right = NULL;
+//		}
+//		else if (left->left != NULL && right->right == NULL)
+//		{
+//			right->right = left->left;
+//			left->left = NULL;
+//		}
+//
+//		changeLeftAndRight(left->left,right->right);
+//
+//		//左边的右边和右边的左边比
+//		if (left->right == NULL && right->left != NULL)
+//		{
+//			left->right = right->left;
+//			right->left = NULL;
+//		}
+//		else if (left->right != NULL && right->left == NULL)
+//		{
+//			right->left = left->right;
+//			left->right = NULL;
+//		}
+//
+//		changeLeftAndRight(left->right,right->left);
+//	}
+//	else if (left == NULL && right != NULL)//重复root的过程
+//	{
+//		if (right->left != NULL && right->right == NULL)
+//		{
+//			right->right = right->left;
+//			right->left = NULL;
+//		}
+//		else if (right->left == NULL && right->right != NULL)
+//		{
+//			right->left = right->right;
+//			right->right = NULL;
+//		}
+//
+//		changeLeftAndRight(right->left, right->right);
+//	}
+//	else if (left != NULL && right == NULL)
+//	{
+//		if (left->left != NULL && left->right == NULL)
+//		{
+//			left->right = left->left;
+//			left->left = NULL;
+//		}
+//		else if (left->left == NULL && left->right != NULL)
+//		{
+//			left->left = left->right;
+//			left->right = NULL;
+//		}
+//
+//		changeLeftAndRight(left->left,left->right);
+//	}
+//}
+//
+//TreeNode* invertTree(TreeNode* root) 
+//{
+//	if (root != NULL)
+//	{
+//		if (root->left != NULL && root->right == NULL)
+//		{
+//			root->right = root->left;
+//			root->left = NULL;
+//		}
+//		else if (root->left == NULL && root->right != NULL)
+//		{
+//			root->left = root->right;
+//			root->right = NULL;
+//		}
+//
+//		changeLeftAndRight(root->left, root->right);
+//	}
+//
+//	return root;
+//}
+
+////迭代版本
+//TreeNode* invertTree(TreeNode* root)
+//{
+//	stack<TreeNode*> s;
+//	s.push(root);
+//
+//	while (!s.empty())
+//	{
+//		TreeNode* fatherNode = s.top();
+//		s.pop();
+//
+//		if (fatherNode != NULL)
+//		{
+//			s.push(fatherNode->left);
+//			s.push(fatherNode->right);
+//
+//			//交换左右子树
+//			TreeNode *tempNode = fatherNode->left;
+//			fatherNode->left = fatherNode->right;
+//			fatherNode->right = tempNode;
+//		}
+//	}
+//
+//	return root;
+//}
+
+//递归版本
+TreeNode* invertTree(TreeNode* root)
 {
-	if (left != NULL && right != NULL)
+	if (root!=NULL)
 	{
-		int temp = left->val;
-		left->val = right->val;
-		right->val = temp;
+		invertTree(root->left);
+		invertTree(root->right);
 
-		//左边的左边和右边的右边比
-		if (left->left == NULL && right->right != NULL)
-		{
-			left->left = right->right;
-			right->right = NULL;
-		}
-		else if (left->left != NULL && right->right == NULL)
-		{
-			right->right = left->left;
-			left->left = NULL;
-		}
-
-		changeLeftAndRight(left->left,right->right);
-
-		//左边的右边和右边的左边比
-		if (left->right == NULL && right->left != NULL)
-		{
-			left->right = right->left;
-			right->left = NULL;
-		}
-		else if (left->right != NULL && right->left == NULL)
-		{
-			right->left = left->right;
-			left->right = NULL;
-		}
-
-		changeLeftAndRight(left->right,right->left);
-	}
-	else if (left == NULL && right != NULL)//重复root的过程
-	{
-		if (right->left != NULL && right->right == NULL)
-		{
-			right->right = right->left;
-			right->left = NULL;
-		}
-		else if (right->left == NULL && right->right != NULL)
-		{
-			right->left = right->right;
-			right->right = NULL;
-		}
-
-		changeLeftAndRight(right->left, right->right);
-	}
-	else if (left != NULL && right == NULL)
-	{
-		if (left->left != NULL && left->right == NULL)
-		{
-			left->right = left->left;
-			left->left = NULL;
-		}
-		else if (left->left == NULL && left->right != NULL)
-		{
-			left->left = left->right;
-			left->right = NULL;
-		}
-
-		changeLeftAndRight(left->left,left->right);
-	}
-}
-
-TreeNode* invertTree(TreeNode* root) 
-{
-	if (root != NULL)
-	{
-		if (root->left != NULL && root->right == NULL)
-		{
-			root->right = root->left;
-			root->left = NULL;
-		}
-		else if (root->left == NULL && root->right != NULL)
-		{
-			root->left = root->right;
-			root->right = NULL;
-		}
-
-		changeLeftAndRight(root->left, root->right);
+		//交换左右子树
+		TreeNode *temp = root->left;
+		root->left = root->right;
+		root->right = temp;
 	}
 
 	return root;
 }
-
-
 
 int main()
 {
