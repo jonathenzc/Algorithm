@@ -76,8 +76,8 @@ bool isMatch(string s, string p)
 		}
 	}
 
-	//isStrMatch[i][j]表示p[0...i]与s[0...j-1]是否匹配
-	//矩阵的大小是p.size()*(s.size()+1)，纵轴不需要考虑空字符，因为肯定是不匹配的
+	//isStrMatch[i][j]表示p[0...i-1]与s[0...j-1]是否匹配
+	//矩阵的大小是(p.size()+1)*(s.size()+1)，纵轴不需要考虑空字符，因为肯定是不匹配的
 	bool **isStrMatch = new bool*[p.size()+1]; 
 	for (int i = 0; i <= p.size(); i++)
 		isStrMatch[i] = new bool[s.size()+1];
