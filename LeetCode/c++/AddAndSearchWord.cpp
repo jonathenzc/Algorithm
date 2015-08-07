@@ -1,9 +1,17 @@
 ﻿#include <iostream>
 #include <string>
+#include <stack>
 
 using namespace std;
 
 const int NODESIZE = 26;
+
+struct backTrackEle
+{
+	TrieNode *fatherNode;
+	int index;
+	backTrackEle(TrieNode *node, int theIndex) :fatherNode(node), index(theIndex){}
+};
 
 class TrieNode {
 public:
@@ -14,6 +22,7 @@ public:
 			next[i] = NULL;
 
 		nodeInserted = false;
+		hasChildren = false;
 	}
 
 	TrieNode(char theLetter) {
@@ -23,11 +32,13 @@ public:
 
 		letter = theLetter;
 		nodeInserted = false;
+		hasChildren = false;
 	}
 
 	TrieNode **next;
 	char letter;
-	bool nodeInserted;//记录从root节点到当前节点的子串是否插入过字典
+	bool nodeInserted; //记录从root节点到当前节点的子串是否插入过字典
+	bool hasChildren; //记录该节点下是否有孩子
 };
 
 class Trie {
@@ -43,7 +54,10 @@ public:
 		for (int i = 0; i < word.size(); i++)
 		{
 			if (nextNode->next[word[i] - 'a'] == NULL)
+			{
 				nextNode->next[word[i] - 'a'] = new TrieNode(word[i]);
+				nextNode->hasChildren = true;
+			}
 
 			nextNode = nextNode->next[word[i] - 'a'];
 
@@ -59,24 +73,75 @@ public:
 
 		TrieNode *nextTrie = root;
 		bool wordInserted = false;
-		for (int i = 0; i < word.size(); i++)
+		stack<backTrackEle> s;
+		
+		int i = 0;
+		while (i<s.size())
 		{
 			if (word[i] == '.')
 			{
-				//检查
-			}
-			else
-			{
-				if (nextTrie != NULL && nextTrie->next[word[i] - 'a'] != NULL &&
-					(nextTrie->next[word[i] - 'a']->letter == word[i] || nextTrie->next[word[i] - 'a']->letter == '.'))
+				//检查当前节点是否有孩子
+				if(nextTrie->hasChildren)
 				{
-					wordInserted = nextTrie->next[word[i] - 'a']->nodeInserted;
-					nextTrie = nextTrie->next[word[i] - 'a'];
+					//从'a'找到不为NULL的节点压栈
+					TrieNode *temp = nextTrie->next[0];
+					int index = 0;
+					while (temp == NULL)
+					{
+						index++;
+						temp = nextTrie->next[index];
+					}
+					
+					s.push(backTrackEle(nextTrie,index));
+
+					nextTrie = temp;
+					i++;
 				}
 				else
 					return false;
+			}
+			else
+			{
+				if (nextTrie != NULL)
+				{
+					if (nextTrie->next[word[i] - 'a'] != NULL /*&&
+						nextTrie->next[word[i] - 'a']->letter == word[i]*/)
+					{
+						wordInserted = nextTrie->next[word[i] - 'a']->nodeInserted;
+						nextTrie = nextTrie->next[word[i] - 'a'];
+						i++;
+					}
+					else//该字符没有word[i]这个孩子,回溯到上一个字符的下一个
+					{
+						if (!s.empty())
+						{
+							backTrackEle ele = s.top();
+							if (ele.index == 25)//26个字母已经都检查过时，需要回溯到上一层
+							{
 
-				if (i == word.size() - 1)
+							}
+
+							TrieNode *temp = nextTrie->next[0];
+							int index = 0;
+							while (temp == NULL)
+							{
+								index++;
+								temp = nextTrie->next[index];
+							}
+
+							nextTrie = ele.fatherNode->next[++ele.index]; //比如'a'不行，就试'b'
+							s.pop();
+							s.push(ele);
+						}
+					}
+
+				}
+				else//当前结点为空,说明不存在
+					return false;
+
+		
+
+				if (i == word.size())
 				{
 					if (wordInserted)//处理字典中加入了abb,所有ab时的情况
 						return true;
