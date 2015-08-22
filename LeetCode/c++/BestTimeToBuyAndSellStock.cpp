@@ -7,8 +7,10 @@ int maxProfit(vector<int>& prices) {
 	if (prices.size() <= 0)
 		return 0;
 
-	int *profit = new int[prices.size()]; //profit[i]表示从第1天到第i天的股票收益
-	profit[0] = 0;
+	// int *profit = new int[prices.size()]; //profit[i]表示从第1天到第i天的股票收益
+	// profit[0] = 0;
+	int maxProfitSoFar = 0; //当前最大的利益
+
 	int lowestPrice = prices[0]; //最低价
 	for (int i = 1; i < prices.size(); i++)
 	{
@@ -17,13 +19,16 @@ int maxProfit(vector<int>& prices) {
 			lowestPrice = prices[i];
 
 		int todayProfit = prices[i] - lowestPrice;
-		if (todayProfit < 0)
-			profit[i] = profit[i - 1];
-		else
-			profit[i] = (profit[i - 1]>todayProfit) ? profit[i - 1] : todayProfit;
+		// if (todayProfit < 0)
+		// 	profit[i] = profit[i - 1];
+		// else
+		// 	profit[i] = (profit[i - 1]>todayProfit) ? profit[i - 1] : todayProfit;
+		if(todayProfit > maxProfitSoFar)
+			maxProfitSoFar = todayProfit;
 	}
 
-	return profit[prices.size() - 1];
+	// return profit[prices.size() - 1];
+	return maxProfitSoFar;
 }
 
 

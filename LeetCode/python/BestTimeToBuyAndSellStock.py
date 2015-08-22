@@ -8,20 +8,23 @@ class Solution(object):
         if(pricesSize == 0):
             return 0
 		
-        profit = [0 for i in range(pricesSize)] #profit[i]表示第1天到第i天的最大利益
+        # profit = [0 for i in range(pricesSize)] #profit[i]表示第1天到第i天的最大利益
         lowestPrice = prices[0]
+        maxprofitSoFar = 0
         for i in range(1,pricesSize,1):
             #更新股票最低价
             if(prices[i]<lowestPrice):
                 lowestPrice = prices[i]
 			
             todayProfit = prices[i] - lowestPrice
-            if(todayProfit > profit[i-1]):
-                profit[i] = todayProfit
-            else:
-                profit[i] = profit[i-1]
+            if(todayProfit > maxprofitSoFar):
+                maxprofitSoFar = todayProfit
+            #     profit[i] = todayProfit
+            # else:
+            #     profit[i] = profit[i-1]
 		
-        return profit[pricesSize-1]
+        # return profit[pricesSize-1]
+        return maxprofitSoFar
 		
 #测试程序
 s = Solution()
