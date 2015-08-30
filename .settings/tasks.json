@@ -223,22 +223,22 @@
 */
 
 //python翻译
-{
-    "version": "0.1.0",
-    "command": "python",
-    "windows": {
-         "command": "c:\\Python34\\python.exe"//python的安装路径
-    },
-    "args": ["${file}"]
-}
+// {
+//     "version": "0.1.0",
+//     "command": "python",
+//     "windows": {
+//          "command": "c:\\Python34\\python.exe"//python的安装路径
+//     },
+//     "args": ["${file}"]
+// }
 
 //C++编译，生成名为test的可执行程序
-// {
-//     "version": "0.1.0", 
-//     "command": "g++",
-//     "args": ["-Wall", "-o","test","${file}"], //生成的可执行文件叫test
-//     "showOutput": "always"
-// }
+{
+    "version": "0.1.0", 
+    "command": "g++",
+    "args": ["-Wall", "-o","test","${file}"], //生成的可执行文件叫test
+    "showOutput": "always"
+}
 
 //java编译 命令有问题，可能是因为环境变量的问题
 // {
