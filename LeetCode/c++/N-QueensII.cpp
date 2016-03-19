@@ -65,7 +65,9 @@ int totalNQueens(int n) {
 	}
 
 	return queenCnt;
-}int main()
+}
+
+int main()
 {
 	cout << totalNQueens(8);
 
