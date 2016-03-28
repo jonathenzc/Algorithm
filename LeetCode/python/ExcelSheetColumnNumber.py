@@ -30,4 +30,4 @@ class Solution:
 #测试程序
 s = Solution()
 # print(s.powerOf26(2))
-print(s.titleToNumber("ZA"))
+print(s.titleToNumber("XFD"))
