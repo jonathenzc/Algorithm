@@ -1,0 +1,77 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+/***************************** 第一种方法 通过中序遍历BST，返回tree[k-1] ******************************/
+void inorderTraverse(TreeNode *root, vector<int>& v)
+{
+	if (root != NULL)
+	{
+		inorderTraverse(root->left, v);
+		v.push_back(root->val);
+		inorderTraverse(root->right, v);
+	}
+}
+
+int kthSmallest1(TreeNode* root, int k) {
+	vector<int> v;
+	inorderTraverse(root, v);
+
+	return v[k - 1];
+}
+
+/***************************** 第二种方法  ******************************/
+int helper(TreeNode* root, int k, int &target)
+{
+	if (root == NULL)
+		return 0;
+
+	int left = helper(root->left, k, target);
+	int rootNum = left + 1;
+	if (rootNum == k)
+		target = root->val;
+
+	int right = helper(root->right, k - rootNum, target);
+
+	return left + right + 1;
+}
+
+int kthSmallest(TreeNode* root, int k) {
+
+	int result = -1;
+	helper(root, k, result);
+
+	return result;
+}
+
+int main()
+{
+	TreeNode *root = new TreeNode(4);
+	TreeNode *node1 = new TreeNode(2);
+	TreeNode *node2 = new TreeNode(5);
+	TreeNode *node3 = new TreeNode(1);
+	TreeNode *node4 = new TreeNode(3);
+	TreeNode *node5 = new TreeNode(6);
+
+	//cout << kthSmallest(root,1);
+
+	root->left = node1;
+	root->right = node2;
+
+	node1->left = node3;
+	node1->right = node4;
+	node2->right = node5;
+
+	for(int i=1;i<7;i++)
+		cout << kthSmallest(root, i)<<" ";
+
+	return 0;
+}
