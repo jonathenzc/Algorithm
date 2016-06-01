@@ -9,7 +9,7 @@ bool isPalindrome(string s)
 		return true;
 	else
 	{
-		//ÏÈ½«Ô­×Ö·û´®µÄ¿Õ¸ñºÍÆäËû·Ç×ÖÄ¸»òÊı×Ö×Ö·ûÈ¥³ı£¬²¢½«´óĞ´×ÖÄ¸×ª»¯ÎªĞ¡Ğ´×ÖÄ¸
+		//ï¿½È½ï¿½Ô­ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ä¿Õ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ´ï¿½ï¿½Ä¸×ªï¿½ï¿½ÎªĞ¡Ğ´ï¿½ï¿½Ä¸
 		string newS = "";
 		for (int i = 0; i < s.size(); i++)
 		{
@@ -19,7 +19,7 @@ bool isPalindrome(string s)
 				newS += s[i]+32;
 		}
 		
-		//ÔÚÔ¤´¦ÀíºóµÄ×Ö·û´®Á½¶Ë·Ö±ğÉèÖÃÖ¸ÕëÀ´±È½ÏÊÇ·ñÎª»ØÎÄ
+		//ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë·Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½È½ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ï¿½
 		//cout << newS << endl;
 
 		int head = 0,tail = newS.size()-1;
@@ -39,6 +39,50 @@ bool isPalindrome(string s)
 
 		return result;
 	}
+}
+
+//ç¬¬äºŒç§æ–¹æ³•
+bool isValidSudoku(vector<vector<char>>& board) {
+	//å…ˆåˆ¤æ–­boardçš„é•¿åº¦æ˜¯å¦ä¸º9ï¼Œä¸ä¸º9å°±è¿”å›false
+	if (board.size() != 9)
+		return false;
+
+	int rowmap[9];
+	int colmap[9];
+	int blockmap[9];
+
+	//åˆå§‹åŒ–3ä¸ªæ˜ å°„çš„map
+	for (int i = 0; i < 9; i++)
+	{
+		rowmap[i] = 0;
+		colmap[i] = 0;
+		blockmap[i] = 0;
+	}
+
+	//éå†æ•´ä¸ªæ•°ç‹¬
+	for (int i = 0; i < board.size(); i++)
+	{
+		for (int j = 0; j < board[i].size(); j++)
+		{
+			if (board[i][j] != '.')
+			{
+				int num = board[i][j] - '0';
+				int binaryBit = 1 << num;
+
+				//ç”¨3ä¸ªå¤§å°ä¸º9çš„æ•°ç»„æ¥è¡¨ç¤ºè¡Œã€åˆ—ã€9å®«æ ¼æ˜¯å¦ç¬¦åˆæ•°ç‹¬çš„è§„å¾‹
+				//ç”¨9ä½çš„äºŒè¿›åˆ¶æ•°æ¥è¡¨ç¤ºå‡ºç°è¿‡çš„æ•°ï¼Œç›¸é‡å¦‚æœä¸ä¸º0ï¼Œè¡¨ç¤ºä¹‹å‰å‡ºç°è¿‡è¯¥æ•°
+				if ((rowmap[i] & binaryBit) != 0 || (colmap[j] & binaryBit) != 0 ||
+					(blockmap[i / 3 * 3 + j / 3] & binaryBit) != 0)
+					return false;
+
+				rowmap[i] |= binaryBit;
+				colmap[j] |= binaryBit;
+				blockmap[i / 3 * 3 + j / 3] |= binaryBit;
+			}
+		}
+	}
+
+	return true;
 }
 
 int main()

@@ -3,11 +3,6 @@
 
 using namespace std;
 
-//void solveSudoku(vector<vector<char>>& board) 
-//{
-//
-//}
-
 //定位
 int getPivot(vector<int>& nums,int target)
 {
