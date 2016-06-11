@@ -35,10 +35,11 @@ void parenthesisHelper(string s,vector<string> &v,int leftCnt,int rightCnt,int n
 	{
 		if (leftCnt == n && rightCnt == n)
 		{
-			if (isValid(s))
-			{
+			//不判断也可以
+			// if (isValid(s))
+			// {
 				v.push_back(s);
-			}
+			// }
 		}
 		else
 		{
