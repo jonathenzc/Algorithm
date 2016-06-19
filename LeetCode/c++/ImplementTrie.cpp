@@ -27,7 +27,7 @@ public:
 
 	TrieNode **next;
 	char letter;
-	bool nodeInserted;//¼ÇÂ¼´Óroot½Úµãµ½µ±Ç°½ÚµãµÄ×Ó´®ÊÇ·ñ²åÈë¹ı×Öµä
+	bool nodeInserted;//è®°å½•ä»rootèŠ‚ç‚¹åˆ°å½“å‰èŠ‚ç‚¹çš„å­ä¸²æ˜¯å¦æ’å…¥è¿‡å­—å…¸
 };
 
 class Trie {
@@ -71,7 +71,7 @@ public:
 
 			if (i == word.size() - 1)
 			{
-				if (wordInserted)//´¦Àí×ÖµäÖĞ¼ÓÈëÁËabb,ËùÓĞabÊ±µÄÇé¿ö
+				if (wordInserted)//å¤„ç†å­—å…¸ä¸­åŠ å…¥äº†abb,æ‰€æœ‰abæ—¶çš„æƒ…å†µ
 					return true;
 				else
 					return false;
