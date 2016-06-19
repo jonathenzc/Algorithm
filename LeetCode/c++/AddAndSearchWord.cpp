@@ -36,6 +36,11 @@ public:
 		root = new TrieNode();
 	}
 
+	TrieNode* getRoot()
+	{
+		return root;
+	}
+
 	// Inserts a word into the trie.
 	void insert(string word) {
 		TrieNode *nextNode = root;
@@ -53,11 +58,80 @@ public:
 	}
 
 	// Returns if the word is in the trie.
-	bool search(string word) {
+	//方法1：search
+	//bool search(string word) {
+	//	if (word.size() == 0)
+	//		return true;
+
+	//	TrieNode *nextTrie = root;
+	//	bool wordInserted = false;
+	//	for (int i = 0; i < word.size(); i++)
+	//	{
+	//		if(word[i] == '.')
+	//		{
+	//			if (i == word.size() - 1) //最后一位是点
+	//			{
+	//				for (int j = 0; j < 26; j++)
+	//				{
+	//					if (nextTrie != NULL && nextTrie->next[j] != NULL)
+	//					{
+	//						if (nextTrie->next[j]->nodeInserted)
+	//							return true;
+	//					}
+
+	//					if (j == 25)
+	//						return false;
+	//				}
+	//			}
+	//			else
+	//			{
+	//				bool isFound = false;
+	//				string substr = word;
+
+	//				for (int j = 0; j < 26; j++)
+	//				{
+	//					if (nextTrie != NULL && nextTrie->next[j] != NULL)
+	//					{
+	//						substr = word;
+	//						substr[i] = 'a' + j;
+	//						isFound = search(substr);
+
+	//						if (isFound == true)
+	//							return true;
+	//					}
+
+	//					if (j == 25 && isFound == false)
+	//						return false;
+	//				}
+	//			}
+	//		}
+	//		else
+	//		{
+	//			if (nextTrie != NULL && nextTrie->next[word[i] - 'a'] != NULL && nextTrie->next[word[i] - 'a']->letter == word[i])
+	//			{
+	//				wordInserted = nextTrie->next[word[i] - 'a']->nodeInserted;
+	//				nextTrie = nextTrie->next[word[i] - 'a'];
+	//			}
+	//			else
+	//				return false;
+
+	//			if (i == word.size() - 1)
+	//			{
+	//				if (wordInserted)//处理字典中加入了abb,所有ab时的情况
+	//					return true;
+	//				else
+	//					return false;
+	//			}
+	//		}
+	//	}
+	//}
+
+	//方法1：search
+	bool search(string word,TrieNode *nextTrieNode) {
 		if (word.size() == 0)
 			return true;
 
-		TrieNode *nextTrie = root;
+		TrieNode *nextTrie = nextTrieNode;
 		bool wordInserted = false;
 		for (int i = 0; i < word.size(); i++)
 		{
@@ -80,15 +154,13 @@ public:
 				else
 				{
 					bool isFound = false;
-					string substr = word;
+					string substr = word.substr(i+1);
 
 					for (int j = 0; j < 26; j++)
 					{
 						if (nextTrie != NULL && nextTrie->next[j] != NULL)
 						{
-							substr = word;
-							substr[i] = 'a' + j;
-							isFound = search(substr);
+							isFound = search(substr, nextTrie->next[j]);
 
 							if (isFound == true)
 								return true;
@@ -120,25 +192,6 @@ public:
 		}
 	}
 
-	// Returns if there is any word in the trie
-	// that starts with the given prefix.
-	bool startsWith(string prefix) {
-		if (prefix.size() == 0)
-			return true;
-
-		TrieNode *nextTrie = root;
-		for (int i = 0; i < prefix.size(); i++)
-		{
-			if (nextTrie != NULL && nextTrie->next[prefix[i] - 'a'] != NULL && nextTrie->next[prefix[i] - 'a']->letter == prefix[i])
-				nextTrie = nextTrie->next[prefix[i] - 'a'];
-			else
-				return false;
-
-			if (i == prefix.size() - 1)
-				return true;
-		}
-	}
-
 private:
 	TrieNode* root;
 };
@@ -155,7 +208,7 @@ public:
 	// Returns if the word is in the data structure. A word could
 	// contain the dot character '.' to represent any one letter.
 	bool search(string word) {
-		return trie.search(word);
+		return trie.search(word, trie.getRoot());
 	}
 private:
 	Trie trie;
