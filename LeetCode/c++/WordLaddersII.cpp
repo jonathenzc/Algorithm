@@ -3,7 +3,6 @@
 #include <vector>
 #include <unordered_set>
 #include <unordered_map>
-#include <queue>
 
 using namespace std;
 
@@ -97,12 +96,12 @@ using namespace std;
 //	return resultV;
 //}
 
-//方法2：
-void helper(string beginWord, string endWord,unordered_map<string, unordered_set<string>> levelGraph,vector<string> path,vector<vector<string>> &v)
+//方法2：构建一个两节点只差一个字符的图（图的储存形式反相储存），从start广搜至end
+void helper(string beginWord, string endWord, unordered_map<string, unordered_set<string>> &levelGraph, vector<string> path, vector<vector<string>> &v)
 {
 	if (beginWord == endWord)
 	{
-		reverse(path.begin(),path.end());
+		reverse(path.begin(), path.end());
 
 		v.push_back(path);
 	}
@@ -115,7 +114,7 @@ void helper(string beginWord, string endWord,unordered_map<string, unordered_set
 		{
 			vector<string> tmp = path;
 			tmp.push_back(*iter);
-			helper(*iter,endWord,levelGraph,tmp,v);
+			helper(*iter, endWord, levelGraph, tmp, v);
 
 			iter++;
 		}
@@ -129,7 +128,7 @@ vector<vector<string>> findLadders(string beginWord, string endWord, unordered_s
 
 	unordered_set<string> currentNodeSet; //当前层中的节点
 	currentNodeSet.insert(beginWord);
-	
+
 	unordered_set<string> iterSet; //用于遍历的集合
 
 	//从wordList中移除beginWord并插入endWord
@@ -139,16 +138,14 @@ vector<vector<string>> findLadders(string beginWord, string endWord, unordered_s
 	restSet = wordList;
 
 	//构建图
-	while (iterSet.count(endWord) == 0 && restSet.size() > 0)
+	while (currentNodeSet.size() != 0)
 	{
-		for (auto curIter = currentNodeSet.begin(); curIter != currentNodeSet.end(); curIter++)
-		{
-			restSet.erase(*curIter);
-		}
+		restSet = wordList;
 
 		//对每层的节点判断与未被选中的节点进行比较，是否只相差一个字符
 		iterSet = currentNodeSet;
 		currentNodeSet.clear();
+
 		for (auto i = iterSet.begin(); i != iterSet.end(); i++)
 		{
 			string oldS = *i;
@@ -166,42 +163,133 @@ vector<vector<string>> findLadders(string beginWord, string endWord, unordered_s
 					{
 						s[ch] = 'a' + j;
 						//在剩余节点集中寻找
-						if(restSet.find(s) != restSet.end())
+						if (restSet.count(s) > 0)
 						{
 							levelGraph[s].insert(oldS);
+							wordList.erase(s);
 							currentNodeSet.insert(s); //保存下一次遍历时的一层节点
 						}
 					}
 				}
 			}
 		}
-
-		if (currentNodeSet.size() == 0)
-			break;
 	}
-	
+
 	//广度优先搜索找到beginWord到endWord的路径
 	vector<vector<string>> resultV;
 	vector<string> path;
 	path.push_back(endWord);
 
-	helper(endWord,beginWord,levelGraph,path,resultV);
+	helper(endWord, beginWord, levelGraph, path, resultV);
 
 	return resultV;
 }
 
+//void testPrint(string beginWord, string endWord, unordered_set<string> wordList)
+//{
+//	vector<vector<string>> v = findLadders(beginWord, endWord, wordList);
+//
+//	for (int i = 0; i < v.size(); i++)
+//	{
+//		vector<string> tmpV = v[i];		for (int j = 0; j < tmpV.size(); j++)
+//			cout << tmpV[j] << " ";
+//
+//		cout << endl;
+//	}
+//}
+
+
+//解答方法：
+//vector<string> temp_path;
+//vector<vector<string>> result_path;
+//
+//void GeneratePath(unordered_map<string, unordered_set<string>> &path, const string &start, const string &end)
+//{
+//	temp_path.push_back(start);
+//	if (start == end)
+//	{
+//		vector<string> ret = temp_path;
+//		reverse(ret.begin(), ret.end());
+//		result_path.push_back(ret);
+//		return;
+//	}
+//
+//	for (auto it = path[start].begin(); it != path[start].end(); ++it)
+//	{
+//		GeneratePath(path, *it, end);
+//		temp_path.pop_back();
+//	}
+//}
+//vector<vector<string>> findLadders(string start, string end, unordered_set<string> &dict)
+//{
+//	temp_path.clear();
+//	result_path.clear();
+//
+//	unordered_set<string> current_step;
+//	unordered_set<string> next_step;
+//
+//	unordered_map<string, unordered_set<string>> path;
+//
+//	unordered_set<string> unvisited = dict;
+//
+//	if (unvisited.count(start) > 0)
+//		unvisited.erase(start);
+//
+//	current_step.insert(start);
+//
+//	while (current_step.count(end) == 0 && unvisited.size() > 0)
+//	{
+//		for (auto pcur = current_step.begin(); pcur != current_step.end(); ++pcur)
+//		{
+//			string word = *pcur;
+//
+//			for (int i = 0; i < start.length(); ++i)
+//			{
+//				for (int j = 0; j < 26; j++)
+//				{
+//					string tmp = word;
+//					if (tmp[i] == 'a' + j)
+//						continue;
+//					tmp[i] = 'a' + j;
+//					if (unvisited.count(tmp) > 0)
+//					{
+//						next_step.insert(tmp);
+//						path[tmp].insert(word);
+//					}
+//				}
+//			}
+//		}
+//
+//		if (next_step.empty()) break;
+//		for (auto it = next_step.begin(); it != next_step.end(); ++it)
+//		{
+//			unvisited.erase(*it);
+//		}
+//
+//		current_step = next_step;
+//		next_step.clear();
+//	}
+//
+//	if (current_step.count(end) > 0)
+//		GeneratePath(path, end, start);
+//
+//	return result_path;
+//}
+//
 void testPrint(string beginWord, string endWord, unordered_set<string> wordList)
 {
-	vector<vector<string>> v = findLadders(beginWord, endWord, wordList);
+	vector<vector<string>> v = findLadders(beginWord,endWord,wordList);
 
 	for (int i = 0; i < v.size(); i++)
 	{
-		vector<string> tmpV = v[i];		for (int j = 0; j < tmpV.size(); j++)
-			cout << tmpV[j] << " ";
+		vector<string> tmpV = v[i];
+		for (int j = 0; j < tmpV.size(); j++)
+			cout << tmpV[j]<<" ";
 
 		cout << endl;
 	}
 }
+
 
 int main()
 {
