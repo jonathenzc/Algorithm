@@ -4,7 +4,7 @@
 using namespace std;
 
 vector<vector<int>> generateMatrix(int n) {
-	vector<vector<int>> v(n,vector<int>(n));
+	vector<vector<int>> v(n,vector<int>(n)); //用push_back会花费额外的时间
 
 	if (n > 0)
 	{
