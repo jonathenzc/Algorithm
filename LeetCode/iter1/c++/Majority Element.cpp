@@ -1,48 +1,63 @@
 #include <iostream>
+#include <unordered_map>
 #include <vector>
-#include <map>
 
 using namespace std;
 
-//建立矩阵中出现的数和出现的次数的映射，计算出众数
-//注：题目中已经限制了矩阵不为空而且肯定存在众数
-int majorityElement(vector<int>& nums)
-{
-	map<int, int> m;//键表示矩阵中的数，值表示该数出现的次数
+//鏂规硶1:map鏂规硶
+//int majorityElement(vector<int>& nums) {
+//	unordered_map<int, int> map;
+//	int maxCnt = 0;
+//	int maxNum = nums[0];
+//
+//	for (int i = 0; i < nums.size(); i++)
+//	{
+//		map[nums[i]]++;
+//
+//		int cnt = map[nums[i]];
+//
+//		if (cnt > maxCnt)
+//		{
+//			maxCnt = cnt;
+//			maxNum = nums[i];
+//		}
+//	}
+//
+//	return maxNum;
+//}
 
-	int maxCnt = 0;
-	int majorityNum = nums[0];
+//鏂规硶2锛氭椂闂碠(n)锛岀┖闂碠(1)
+int majorityElement(vector<int>& nums) {
+	int candidate = nums[0];
+	int cnt = 1;
 
-	for (int i = 0; i < nums.size(); i++)
+	for (int i = 1; i < nums.size();i++)
 	{
-		if (m.find(nums[i]) == m.end())
-			m[nums[i]] = 1;
-		else
-		{
-			m[nums[i]]++;
+		if (cnt == 0)
+			candidate = nums[i];
 
-			if (maxCnt < m[nums[i]])
-			{
-				maxCnt = m[nums[i]];
-				majorityNum = nums[i];
-			}
-		}
+		if (candidate == nums[i])
+			cnt++;
+		else
+			cnt--;
 	}
 
-	return majorityNum;
+	return candidate;
 }
 
 int main()
 {
 	vector<int> v;
-
-	v.push_back(1);
 	v.push_back(2);
+	v.push_back(2);
+	v.push_back(2);
+	v.push_back(2);
+	v.push_back(1);
 	v.push_back(3);
 	v.push_back(3);
 	v.push_back(4);
 
-	cout << majorityElement(v);
+	cout << majorityElement(v) << endl;
 
 	return 0;
 }
