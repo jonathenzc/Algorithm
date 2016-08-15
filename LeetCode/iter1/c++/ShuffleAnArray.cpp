@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <unordered_map>
 
 using namespace std;
 
@@ -8,7 +7,6 @@ class Solution {
 public:
 	Solution(vector<int> nums) {
 		originV = nums;
-		v = nums;
 	}
 
 	/** Resets the array to its original configuration and return it. */
@@ -18,23 +16,17 @@ public:
 
 	/** Returns a random shuffling of the array. */
 	vector<int> shuffle() {
-		unordered_map<int, int> isUsed;
-
+		vector<int> v(originV);
 		for (int i = 0; i < v.size(); i++)
 		{
-			int index = rand() % v.size();
-			while (isUsed.find(index) != isUsed.end())
-				index = rand() % v.size();
-
-			v[i] = originV[index];
-			isUsed[index] = 1;
+			int index = rand() % (v.size()-i);
+			swap(v[i+index],v[i]);
 		}
 
 		return v;
 	}
 private:
 	vector<int> originV;
-	vector<int> v;
 };
 
 int main()
