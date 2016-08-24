@@ -29,7 +29,7 @@ int main()
 			if (j == 0)
 				dp[j] += coupon[j];
 			else
-				dp[j] = max(dp[j]+coupon[j],dp[j-1]+coupon[j]);
+				dp[j] = max(dp[j],dp[j-1])+coupon[j];
 		}
 
 		i++;
