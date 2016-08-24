@@ -130,7 +130,7 @@ bool isInterleave(string s1, string s2, string s3) {
 	}
 
 	//canBeInterLeave[i][j]表示s3[0...i+j-1]能被s1[0...i-1]和s2[0...j-1]组成字符串
-	//canBeInterLeave[i][j]由(canBeInterLeave[i-1][j]和s1[i-1]==s3[i+j-1])或(canBeInterLeave[i][j-1]和s2[j-1]==s3[i+j-1])决定
+	//canBeInterLeave[i][j]由(canBeInterLeave[i-1][j]与s1[i-1]==s3[i+j-1])或(canBeInterLeave[i][j-1]与s2[j-1]==s3[i+j-1])决定
 	canBeInterLeave[0][0] = true;
 
 	//对第一行赋值
