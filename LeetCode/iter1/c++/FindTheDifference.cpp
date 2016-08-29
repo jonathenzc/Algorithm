@@ -24,10 +24,6 @@ char findTheDifference(string s, string t) {
 	return target;
 }
 
-int lastRemaining(int n) {
-
-}
-
 int main()
 {
 	cout << findTheDifference("abcd","abcde") << endl;
