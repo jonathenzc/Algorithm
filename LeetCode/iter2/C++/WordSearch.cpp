@@ -20,6 +20,9 @@ public:
 					board[i][j] = '.';
 					helper(i, j, 1, board, word);
 					board[i][j] = word[0];
+
+                    if(isFound)
+                        return true;
 				}
 			}
 		}
@@ -31,7 +34,7 @@ public:
 private:
 	bool isFound;
 
-	void helper(int row, int col, int index, vector<vector<char>> board, string word) {
+	void helper(int row, int col, int index, vector<vector<char>> &board, string word) {
 		if (index >= word.size())
 			isFound = true;
 		else {
