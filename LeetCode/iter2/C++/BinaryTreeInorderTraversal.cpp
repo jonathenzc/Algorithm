@@ -17,8 +17,37 @@ struct TreeNode {
 
 class Solution {
 public:
+	//递归版本
 	vector<int> inorderTraversal(TreeNode* root) {
 		helper(root);
+
+		return v;
+	}
+
+	//迭代版本
+	vector<int> inorderTraversalIter(TreeNode* root) {
+		vector<TreeNode*> st;
+		st.push_back(root);
+
+		while (!st.empty())
+		{
+			TreeNode *node = st.back();
+			st.pop_back();
+
+			if (node != NULL)
+			{
+				if (node->left == NULL && node->right == NULL) //叶子节点
+				{
+					v.push_back(node->val);
+				}
+				else
+				{
+					st.push_back(node->right);
+					st.push_back(new TreeNode(node->val));
+					st.push_back(node->left);
+				}
+			}	
+		}
 
 		return v;
 	}
@@ -47,7 +76,7 @@ int main()
 
 	Solution s;
 
-	vector<int> v = s.inorderTraversal(root);
+	vector<int> v = s.inorderTraversalIter(root);
 
 	for (auto num : v)
 		cout << num << " ";
