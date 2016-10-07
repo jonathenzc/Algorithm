@@ -19,9 +19,6 @@ struct TreeNode {
 
 class Solution {
 public:
-	//int rob(TreeNode* root) {
-
-	//}
 	vector<int> rightSideView(TreeNode* root) {
 		if (root != NULL)
 		{
@@ -64,8 +61,6 @@ public:
 	}
 
 private:
-	int maxMoney;
-
 	vector<int> v;
 
 	queue<pair<TreeNode*,int>> q;
