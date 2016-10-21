@@ -18,10 +18,6 @@ struct ListNode {
 
 class Solution {
 public:
-	bool isPalindrome(ListNode* head) {
-		return false;
-	}
-
 	//迭代版本
 	ListNode* reverseListIter(ListNode* head) {
 		if (head == NULL)
