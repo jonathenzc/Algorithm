@@ -22,7 +22,7 @@ int trap(vector<int>& height) {
 			s.pop();
 			if (!s.empty())
 			{
-				int area = (min(height[s.top()], height[i]) - height[bot_index])*(i - s.top() - 1);
+				int area = ( min(height[s.top()], height[i]) - height[bot_index] )*(i - s.top() - 1);
 				maxArea += area;
 			}
 		}
