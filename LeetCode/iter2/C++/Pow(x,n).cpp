@@ -53,6 +53,39 @@ public:
 
 		return ret;
 	}
+
+	//快速幂法
+	double myPow2(double x, int n) {
+		if (x == 0 || x == 1)
+			return x;
+
+		if (n == 0)
+			return 1;
+
+		long long nl = n;
+		bool isNegative = false;
+		if (nl < 0)
+		{
+			nl = -nl;
+			isNegative = true;
+		}
+
+		double ret = 1;
+		double base = x;
+		while (nl > 0)
+		{
+			if (nl & 1 == 1)
+				ret = ret*base;
+
+			base = base*base;
+			nl >>= 1;
+		}
+
+		if (isNegative)
+			ret = 1.0/ret;
+
+		return ret;
+	}
 };
 
 int main(void)
