@@ -1,3 +1,16 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <sstream>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <queue>
+#include <stack>
+
+using namespace std;
+
 class Solution {
 public:
 	vector<int> constructRectangle(int area) {
@@ -14,20 +27,10 @@ public:
 			int W = sqrt;
 
 			while (W < area && area % W != 0)
-				W++;
+				W--;
 
-			int L = area / W;
-
-			if (W < L)
-			{
-				v.push_back(L);
-				v.push_back(W);
-			}
-			else
-			{
-				v.push_back(W);
-				v.push_back(L);
-			}
+			v.push_back(area/W);
+			v.push_back(W);
 		}
 
 		return v;
@@ -56,3 +59,32 @@ private:
 		return num;
 	}
 };
+
+void testPrint(vector<int> v)
+{
+	for (int i = 0; i < v.size(); i++)
+		cout << v[i] << " ";
+}
+
+int main(void)
+{
+	Solution s;
+
+	cout << "square 2\n";
+	vector<int> v = s.constructRectangle(2);
+	testPrint(v);
+
+	cout << "\nsquare 4\n";
+	v = s.constructRectangle(4);
+	testPrint(v);
+
+	cout << "\nsquare 6\n";
+	v = s.constructRectangle(6);
+	testPrint(v);
+
+	cout << "\nsquare 10\n";
+	v = s.constructRectangle(10);
+	testPrint(v);
+
+	return 0;
+}
