@@ -41,7 +41,7 @@ private:
 		double sqrtD = num;
 		double preSqrtD = sqrtD;
 
-		//Xn+1 = (Xn+num/Xn)/2
+		//牛顿迭代法 Xn+1 = (Xn+num/Xn)/2
 		do
 		{
 			preSqrtD = sqrtD;
