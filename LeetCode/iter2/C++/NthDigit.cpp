@@ -19,23 +19,26 @@ public:
 		if (n < 10)
 			return n;
 
-		int base = 9;
+		long long nLL = n;
+		long long base = 9;
 		int digitCnt = 1;
+		long long baseSum = 0;
 
-		while (n > 0) 
+		while (nLL > 0)
 		{
+			nLL -= base * digitCnt;
+			if (nLL < 0)
+				break;
+
+			baseSum += base;
 			base *= 10;
 			digitCnt++;
-
-			n -= base * digitCnt;
 		}
 
-		n += base * (digitCnt);
+		nLL += base * (digitCnt);
 
-		base /= 10;
-
-		int target = (n - 1) / digitCnt + 1 + base/10*(digitCnt);
-		int targetDigit = (n - 1) % digitCnt;
+		int target = (nLL - 1) / digitCnt + 1 + baseSum;
+		int targetDigit = (nLL - 1) % digitCnt;
 
 		return getNumDigit(target, digitCnt-targetDigit);
 	}
@@ -59,9 +62,15 @@ int main(void)
 {
 	Solution s;
 	
-	//for (int i = 1; i < 30; i++)
-	//	cout << s.findNthDigit(i) << " ";
-	cout << s.findNthDigit(10) << " ";
+	for (int i = 1; i < 30; i++)
+		cout << s.findNthDigit(i) << " ";
+
+	cout << endl << s.findNthDigit(199) << endl;
+	cout << s.findNthDigit(200) << endl;
+	cout << s.findNthDigit(201) << endl;
+	cout << s.findNthDigit(INT_MAX) << endl;
+
+
 
 
 	return 0;
