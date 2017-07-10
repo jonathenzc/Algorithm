@@ -15,8 +15,8 @@ class Solution {
 public:
 	int numberOfBoomerangs(vector<pair<int, int>>& points) {
 		int cnt = 0;
-		//使用map来记录每个点与其他点的距离
 		
+		//使用map来记录每个点与其他点的距离
 		for (auto point : points)
 		{
 			unordered_map<int, int> distanceMap;
