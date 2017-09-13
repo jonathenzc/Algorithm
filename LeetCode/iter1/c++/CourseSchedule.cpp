@@ -17,20 +17,46 @@ public:
 		//初始化图
 		initGraph(prerequisites);
 
-		//取出
+		//取出入度为0的节点
+		int cnt = 0;
+		while (!zeroDegreeQ.empty())
+		{
+			int v = zeroDegreeQ.front();
+			zeroDegreeQ.pop();
+			cnt++;
+
+			//将v指向的节点的入度-1，同时更新入度为0的矩阵
+			vector<int> vList = graph[v];
+			for (int i = 0; i < vList.size(); i++)
+			{
+				int tmpDegree = inDegree[vList[i]];
+				inDegree[vList[i]] = tmpDegree - 1;
+				if (tmpDegree - 1 == 0)
+					zeroDegreeQ.push(vList[i]);
+			}
+		}
+		
+		return cnt == vCnt;
 	}
 private:
 	queue<int> zeroDegreeQ;
 	unordered_map<int, int> inDegree;
 	unordered_map<int, vector<int>> graph;
+	int vCnt;
 
+	//first <- second
 	void initGraph(vector<pair<int,int>>& prerequisites) 
 	{
 		//构建邻接表的图
 		for (int i = 0; i < prerequisites.size(); i++)
 		{
 			pair<int, int> edge = prerequisites[i];
+
+			if (inDegree.find(edge.second) == inDegree.end())
+				inDegree[edge.second] = 0;
+
 			inDegree[edge.first]++;
+
 			if (graph.find(edge.second) != graph.end())
 				graph[edge.second].push_back(edge.first);
 			else
@@ -41,10 +67,13 @@ private:
 			}
 		}
 
+		vCnt = 0;
+
 		//寻找入度为0的节点
 		unordered_map<int, int>::iterator inDegreeIter;
-		for (; inDegreeIter != inDegree.end(); inDegreeIter++)
+		for (inDegreeIter = inDegree.begin(); inDegreeIter != inDegree.end(); inDegreeIter++)
 		{
+			vCnt++;
 			if (inDegreeIter->second == 0)
 				zeroDegreeQ.push(inDegreeIter->first);
 		}
@@ -55,34 +84,17 @@ int main(void)
 {
 	Solution s;
 
-	//vector<int> numbers;
-	//numbers.push_back(2);
-	//numbers.push_back(7);
-	//numbers.push_back(11);
-	//numbers.push_back(15);
+	vector<pair<int, int>> prerequisites;
+	pair<int, int> p1(1, 0);
+	pair<int, int> p2(0, 2);
 
-	//vector<int> ret = s.twoSum(numbers, 17);
-	//for (int index : ret)
-	//{
-	//	cout << index << " ";
-	//}
-	//cout << endl;
+	prerequisites.push_back(p1);
+	prerequisites.push_back(p2);
 
-	vector<int> numbers2;
-	numbers2.push_back(3);
-	numbers2.push_back(24);
-	numbers2.push_back(50);
-	numbers2.push_back(79);
-	numbers2.push_back(88);
-	numbers2.push_back(150);
-	numbers2.push_back(345);
-
-	vector<int> ret2 = s.twoSum(numbers2, 200);
-	for (int index : ret2) 
-	{
-		cout << index << " ";
-	}
-	cout << endl;
+	if (s.canFinish(2, prerequisites))
+		cout << "Can finish\n";
+	else
+		cout << "Can not finish\n";
 
 
 	return 0;
