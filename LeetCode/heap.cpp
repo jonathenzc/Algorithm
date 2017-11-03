@@ -29,7 +29,22 @@ private:
 	//沿着子节点至上层父节点
 	void heapify(vector<int>& v, int start, int size)
 	{
-		
+		int child = start * 2 + 1;
+		while (child < size)
+		{
+			if (child + 1 < size && v[child] < v[child + 1])
+				child++;
+
+			if (v[start] < v[child])
+			{
+				int tmp = v[child];
+				v[child] = v[start];
+				v[start] = tmp;
+			}
+
+			start = child;
+			child = start * 2 + 1;
+		}
 	}
 };
 
