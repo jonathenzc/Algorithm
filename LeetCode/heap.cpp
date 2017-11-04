@@ -22,11 +22,11 @@ public:
 			v[v.size() - 1 - i] = v[0];
 			v[0] = tmp;
 
-			heapify(v, 0, v.size() - i);
+			heapify(v, 0, v.size() - 1 - i);
 		}
 	}
 private:
-	//沿着子节点至上层父节点
+	//沿着子节点至上层父节点，直至该子树符合堆的规则
 	void heapify(vector<int>& v, int start, int size)
 	{
 		int child = start * 2 + 1;
@@ -41,6 +41,8 @@ private:
 				v[child] = v[start];
 				v[start] = tmp;
 			}
+			else
+				break;
 
 			start = child;
 			child = start * 2 + 1;
