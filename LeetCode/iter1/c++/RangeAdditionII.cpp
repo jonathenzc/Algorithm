@@ -30,74 +30,43 @@ public:
 		}
 
 		//遍历mVec和nVec统计个数
-		int target;
+		int cntM = cntFirstGrid(mVec);
+		int cntN = cntFirstGrid(nVec);
 
+		return cntM*cntN;
+	}
+private:
+	int cntFirstGrid(vector<int> v) {
 		int cnt = 1;
-		for (int i = 1; i < mVec.size(); i++) {
-			if (mVec[i] == mVec[0]) {
-
+		for (int i = 1; i < v.size(); i++) {
+			if (v[i] == v[0]) {
+				cnt++;
+			}
+			else {
+				break;
 			}
 		}
-
 
 		return cnt;
 	}
 };
 
-void testPrint(vector<int> v) {
-	Solution s;
-
-	if (s.isOneBitCharacter(v))
-		cout << "Yes\n";
-	else
-		cout << "No\n";
-}
-
 int main(void)
 {
+	vector<vector<int>> v;
 	vector<int> v0;
-	v0.push_back(1);
-	v0.push_back(1);
-	v0.push_back(0);
-
-	testPrint(v0);
+	v0.push_back(2);
+	v0.push_back(2);
 
 	vector<int> v1;
-	v1.push_back(1);
-	v1.push_back(0);
+	v1.push_back(3);
+	v1.push_back(3);
 
-	testPrint(v1);
+	v.push_back(v0);
+	v.push_back(v1);
 
-	vector<int> v2;
-	v2.push_back(1);
-	v2.push_back(0);
-	v2.push_back(0);
-
-	testPrint(v2);
-
-	vector<int> v3;
-	v3.push_back(0);
-	v3.push_back(0);
-	v3.push_back(0);
-	v3.push_back(0);
-
-	testPrint(v3);
-
-	vector<int> v4;
-	v4.push_back(0);
-	v4.push_back(0);
-	v4.push_back(1);
-	v4.push_back(0);
-
-	testPrint(v4);
-
-	vector<int> v5;
-	v5.push_back(1);
-	v5.push_back(0);
-	v5.push_back(1);
-	v5.push_back(0);
-
-	testPrint(v5);
+	Solution s;
+	cout << s.maxCount(3, 3, v) << endl;
 
 	return 0;
 }
