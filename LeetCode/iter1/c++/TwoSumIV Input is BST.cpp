@@ -21,8 +21,8 @@ struct TreeNode {
 class Solution {
 public:
 	bool findTarget(TreeNode* root, int k) {
-		//前序构建容器
-		preOrder(root);
+		//中序构建容器
+		inOrder(root);
 
 		bool ret = false;
 		for (int i = 0; i < v.size(); i++) {
@@ -47,12 +47,12 @@ private:
 	unordered_map<int, int> occurrance;
 	vector<int> v;
 
-	void preOrder(TreeNode* root) {
+	void inOrder(TreeNode* root) {
 		if (root != NULL) {
-			preOrder(root->left);
+			inOrder(root->left);
 			occurrance[root->val]++;
 			v.push_back(root->val);
-			preOrder(root->right);
+			inOrder(root->right);
 		}
 	}
 };
