@@ -1,110 +1,105 @@
 #include <iostream>
+#include <string>
+#include <algorithm>
 #include <vector>
-#include <map>
+#include <sstream>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <queue>
+#include <stack>
 
 using namespace std;
-	
-struct elePair
-{
-	int frequency;
-	int num;
+
+struct MinCmp {
+	bool operator () (pair<int, int> p1, pair<int, int> p2) {
+		return p1.second < p2.second;
+	}
 };
 
-int partition(vector<elePair>& nums,int start,int end)
-{
-	elePair target = nums[start];
-	int j = start;
-
-	for (int i = start+1; i <= end; i++)
-	{
-		if (nums[i].frequency <= target.frequency)
-		{
-			j++;
-			elePair tmp = nums[j];
-			nums[j] = nums[i];
-			nums[i] = tmp;
+class Solution {
+public:
+	//方法1：希尔排序,O(N)
+	vector<int> topKFrequent1(vector<int>& nums, int k) {
+		unordered_map<int, int> frequency;
+		for (int num : nums) {
+			frequency[num]++;
 		}
+
+		vector<vector<int>> shellSortBucket(nums.size() + 1);
+		for (auto iter : frequency) {
+			shellSortBucket[iter.second].push_back(iter.first);
+		}
+
+		vector<int> ret;
+		int cnt = 0;
+		int idx = nums.size();
+		while (cnt < k) {
+			if (shellSortBucket[idx].size() != 0) {
+				int i = 0;
+				while (i < shellSortBucket[idx].size()) {
+					ret.push_back(shellSortBucket[idx][i]);
+					cnt++;
+					i++;
+				}
+			}
+			idx--;
+		}
+
+		return ret;
 	}
 
-	elePair tmp = nums[j];
-	nums[j] = target;
-	nums[start] = tmp;
+	//方法2：最小堆,O(nlogk)
+	vector<int> topKFrequent(vector<int>& nums, int k) {
+		unordered_map<int, int> frequency;
+		for (int num : nums) {
+			frequency[num]++;
+		}
 
-	return j;
+		//构建nums.size()-k个大小的最小堆
+		vector<int> ret;
+		priority_queue<pair<int, int>, vector<pair<int, int>>, MinCmp> heapV;
+		for (auto iter = frequency.begin(); iter != frequency.end(); iter++) {
+			heapV.push(make_pair(iter->first, iter->second));
+			if (heapV.size() > frequency.size() - k) {
+				ret.push_back(heapV.top().first);
+				heapV.pop();
+			}
+		}
+
+		return ret;
+	}
+};
+
+void printVector(vector<int> v) {
+	for (int num : v) {
+		cout << num << " ";
+	}
+	cout << endl;
 }
 
-int getKthPivot(vector<elePair>& nums, int start, int end,int k)
+int main(void)
 {
-	int pivot = partition(nums,start,end);
+	Solution s;
+	vector<int> nums1;
+	nums1.push_back(5);
+	nums1.push_back(5);
+	nums1.push_back(5);
+	nums1.push_back(9);
+	nums1.push_back(9);
+	nums1.push_back(15);
 
-	int diff = end - pivot +1;
+	printVector(s.topKFrequent(nums1, 2));
+	printVector(s.topKFrequent(nums1, 3));
 
-	if (k == diff)
-		return end+1-k;
-	else if (k > diff)
-		return getKthPivot(nums, start, pivot - 1, k-diff);
-	else
-		return getKthPivot(nums,pivot+1,end,k);
-}
+	vector<int> nums2;
+	nums2.push_back(1);
+	printVector(s.topKFrequent(nums2, 1));
 
-vector<int> findKthLargest(vector<elePair>& nums, int k) {
-	int vSize = nums.size()-1;
-	
-	int pivot = getKthPivot(nums,0,vSize,k);
-
-	vector<int> v;
-	for (int i = vSize; i >= pivot; i--)
-		v.push_back(nums[i].num);
-
-	return v;
-}
-
-vector<int> topKFrequent(vector<int>& nums, int k) 
-{
-	map<int, int> numFre;
-
-	//利用map统计数列中数出现的频率
-	for (int i = 0; i < nums.size(); i++)
-	{
-		if (numFre.find(nums[i]) == numFre.end())
-			numFre.insert(map<int, int>::value_type(nums[i], 1));
-		else
-			numFre[nums[i]]++;
-	}
-
-	//将map中的数塞入vector中
-	vector<elePair> v;
-	map<int, int>::iterator iter;
-	for (iter = numFre.begin(); iter != numFre.end(); iter++)
-	{
-		elePair pair;
-		pair.frequency = iter->second;
-		pair.num = iter->first;
-
-		v.push_back(pair);
-	}
-
-	//利用求第k大的数的方法来求
-	vector<int> result = findKthLargest(v,k);
-
-	return result;
-}
-
-int main()
-{
-	vector<int> nums;
-	nums.push_back(1);
-	nums.push_back(1);
-	nums.push_back(1);
-	nums.push_back(2);
-	nums.push_back(2);
-	nums.push_back(3);
-
-	vector<int> v = topKFrequent(nums,2);
-	for (int i = 0; i < v.size();i++)
-	{
-		cout << nums[i] << " ";
-	}
+	vector<int> nums3;
+	nums3.push_back(1);
+	nums3.push_back(2);
+	printVector(s.topKFrequent(nums3, 2));
 
 	return 0;
 }
