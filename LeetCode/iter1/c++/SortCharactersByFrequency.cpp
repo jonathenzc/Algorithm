@@ -41,7 +41,7 @@ public:
 		return ret;
 	}
 
-	//方法2：最小堆,O(nlogk)
+	//方法2：最大堆,O(nlogk)
 	string frequencySort1(string s) {
 		unordered_map<char, int> frequency;
 		for (char ch : s) frequency[ch]++;
